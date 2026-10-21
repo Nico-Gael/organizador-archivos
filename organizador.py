@@ -64,6 +64,18 @@ def organizar(destino, origen, ruta_de_trabajo):
                 a.rename(ruta_de_trabajo / d / a.name)
 
 
+def diccionario_con_valores(rutas):
+    archivos = verifica_archivos_existentes(rutas)
+    extenciones = extenciones_existentes(archivos)
+    archivos_ordenados, carpetas_ordenadas = ordenar_alfabeticamente(extenciones, archivos)
+    return {
+    "ruta": rutas,
+    "archivos": archivos,
+    "extenciones": extenciones,
+    "archivos_ordenados": archivos_ordenados,
+    "carpetas_ordenadas": carpetas_ordenadas
+}
 
 #crear_carpeta()
 #organizar()
+
