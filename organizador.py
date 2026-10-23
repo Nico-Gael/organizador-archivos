@@ -61,8 +61,37 @@ def organizar(destino, origen, ruta_de_trabajo):
     for a in origen:
         for d in destino:
             if a.suffix.lower()[1:] == d:
-                a.rename(ruta_de_trabajo / d / a.name)
+                a.replace(ruta_de_trabajo / d / a.name)
 
+def archivo_repetido(destino, origen, ruta_de_trabajo, accion):
+    for a in origen:
+        for d in destino:
+            if a.suffix.lower()[1:] == d:
+                if accion:
+                    if accion == 'sobrescribir':
+                        a.replace(ruta_de_trabajo / d / a.name)
+                    elif accion == 'renombrar':
+                        carpeta_destino = ruta_de_trabajo / d
+                        ruta_destino_final = carpeta_destino / a.name
+                        if ruta_destino_final.exists():
+                            contador = 1
+                            while True:
+                                nuevo_nombre = f'{a.stem}_{contador:02d}{a.suffix}'
+                                ruta_destino_final = carpeta_destino / nuevo_nombre
+                                if not ruta_destino_final.exists():
+                                    break
+                                contador += 1
+                        a.replace(ruta_destino_final)
+                
+
+def verificar_conflicto(destino, origen, ruta_de_trabajo):
+    conflicto = []
+    for a in origen:
+        for d in destino:
+            verificar = (ruta_de_trabajo / d / a.name)
+            if verificar.exists():
+                conflicto.append(verificar)
+    return conflicto
 
 def diccionario_con_valores(rutas):
     archivos = verifica_archivos_existentes(rutas)
